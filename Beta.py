@@ -36,7 +36,7 @@ logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     handlers=[
-        logging.FileHandler('hostforge_bot.log'),
+        logging.FileHandler('bot.log'),
         logging.StreamHandler()
     ]
 )
@@ -47,8 +47,9 @@ load_dotenv()
 
 # Bot configuration
 TOKEN = os.getenv('DISCORD_TOKEN')
-HOST_IP = os.getenv('HOST_IP')  # Optional, will fetch dynamically if not set
+HOST_IP = os.getenv('HOST_IP') # Optional, will fetch dynamically if not set
 ADMIN_IDS = {int(id_) for id_ in os.getenv('ADMIN_IDS') if id_.strip()}
+HOST = os.getenv('HOST')
 ADMIN_ROLE_ID = int(os.getenv('ADMIN_ROLE_ID')
 WATERMARK = "VPS Service"
 WELCOME_MESSAGE = "Welcome To <"Host">! Get Started With Us!"
