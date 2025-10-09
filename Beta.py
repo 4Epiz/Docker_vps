@@ -40,7 +40,7 @@ logging.basicConfig(
         logging.StreamHandler()
     ]
 )
-logger = logging.getLogger('HostForgeBot')
+logger = logging.getLogger('bot.get.user_id')
 
 # Load environment variables
 load_dotenv()
@@ -48,16 +48,16 @@ load_dotenv()
 # Bot configuration
 TOKEN = os.getenv('DISCORD_TOKEN')
 HOST_IP = os.getenv('HOST_IP')  # Optional, will fetch dynamically if not set
-ADMIN_IDS = {int(id_) for id_ in os.getenv('ADMIN_IDS', '1210291131301101618').split(',') if id_.strip()}
-ADMIN_ROLE_ID = int(os.getenv('ADMIN_ROLE_ID', '1376177459870961694'))
-WATERMARK = "HostForge VPS Service"
-WELCOME_MESSAGE = "Welcome To HostForge! Get Started With Us!"
+ADMIN_IDS = {int(id_) for id_ in os.getenv('ADMIN_IDS') if id_.strip()}
+ADMIN_ROLE_ID = int(os.getenv('ADMIN_ROLE_ID')
+WATERMARK = "VPS Service"
+WELCOME_MESSAGE = "Welcome To <"Host">! Get Started With Us!"
 MAX_VPS_PER_USER = int(os.getenv('MAX_VPS_PER_USER', '3'))
 DEFAULT_OS_IMAGE = os.getenv('DEFAULT_OS_IMAGE', 'ubuntu:22.04')
 DOCKER_NETWORK = os.getenv('DOCKER_NETWORK', 'bridge')
 MAX_CONTAINERS = int(os.getenv('MAX_CONTAINERS', '100'))
-DB_FILE = 'hostforge.db'
-BACKUP_FILE = 'hostforge_backup.pkl'
+DB_FILE = 'database.db'
+BACKUP_FILE = 'backup.txt'
 PORT_RANGE_START = 20000
 PORT_RANGE_END = 30000
 
@@ -889,7 +889,7 @@ async def add_admin(ctx, user: discord.User):
 )
 async def remove_admin(ctx, user: discord.User):
     """Remove an admin user (Owner only)"""
-    if ctx.author.id != 1210291131301101618:  # Only the owner can remove admins
+    if ctx.author.id !=:  # Only the owner can remove admins
         await ctx.send("âŒ Only the owner can remove admins!", ephemeral=True)
         return
     
@@ -1720,7 +1720,7 @@ async def global_stats(ctx):
         total_disk = sum(vps['disk'] for vps in all_vps.values())
         total_restarts = sum(vps.get('restart_count', 0) for vps in all_vps.values())
         
-        embed = discord.Embed(title="HostForge Global Usage Statistics", color=discord.Color.blue())
+        embed = discord.Embed(title="Global Usage Statistics", color=discord.Color.blue())
         embed.add_field(name="Total VPS Created", value=bot.db.get_stat('total_vps_created'), inline=True)
         embed.add_field(name="Total Restarts", value=bot.db.get_stat('total_restarts'), inline=True)
         embed.add_field(name="Current VPS Instances", value=len(all_vps), inline=True)
@@ -2221,7 +2221,7 @@ class VPSManagementView(ui.View):
             if token:
                 bot.db.update_vps(token, {'status': 'running'})
             
-            embed = discord.Embed(title=f"HostForge VPS Management - {self.vps_id}", color=discord.Color.green())
+            embed = discord.Embed(title=f"VPS Management - {self.vps_id}", color=discord.Color.green())
             embed.add_field(name="Status", value="ðŸŸ¢ Running", inline=True)
             
             if vps:
@@ -2257,7 +2257,7 @@ class VPSManagementView(ui.View):
             if token:
                 bot.db.update_vps(token, {'status': 'stopped'})
             
-            embed = discord.Embed(title=f"HostForge VPS Management - {self.vps_id}", color=discord.Color.orange())
+            embed = discord.Embed(title=f"VPS Management - {self.vps_id}", color=discord.Color.orange())
             embed.add_field(name="Status", value="ðŸ”´ Stopped", inline=True)
             
             if vps:
@@ -2326,7 +2326,7 @@ class VPSManagementView(ui.View):
                 except:
                     pass
             
-            embed = discord.Embed(title=f"HostForge VPS Management - {self.vps_id}", color=discord.Color.green())
+            embed = discord.Embed(title=f"VPS Management - {self.vps_id}", color=discord.Color.green())
             embed.add_field(name="Status", value="ðŸŸ¢ Running", inline=True)
             
             if vps:
@@ -2491,7 +2491,7 @@ class OSSelectionView(ui.View):
             await status_msg.edit(content="âœ… HostForge VPS reinstalled successfully!")
             
             try:
-                embed = discord.Embed(title=f"HostForge VPS Management - {self.vps_id}", color=discord.Color.green())
+                embed = discord.Embed(title=f"VPS Management - {self.vps_id}", color=discord.Color.green())
                 embed.add_field(name="Status", value="ðŸŸ¢ Running", inline=True)
                 embed.add_field(name="Memory", value=f"{vps['memory']}GB", inline=True)
                 embed.add_field(name="CPU", value=f"{vps['cpu']} cores", inline=True)
@@ -2620,7 +2620,7 @@ async def manage_vps(ctx, vps_id: str):
 
         status = vps['status'].capitalize()
 
-        embed = discord.Embed(title=f"HostForge VPS Management - {vps_id}", color=discord.Color.blue())
+        embed = discord.Embed(title=f"VPS Management - {vps_id}", color=discord.Color.blue())
         embed.add_field(name="Status", value=f"{status} (Container: {container_status})", inline=True)
         embed.add_field(name="Memory", value=f"{vps['memory']}GB", inline=True)
         embed.add_field(name="CPU", value=f"{vps['cpu']} cores", inline=True)
@@ -2666,7 +2666,7 @@ async def transfer_vps_command(ctx, vps_id: str, new_owner: discord.Member):
         await ctx.send(f"âœ… HostForge VPS {vps_id} has been transferred from {ctx.author.name} to {new_owner.name}!")
 
         try:
-            embed = discord.Embed(title="HostForge VPS Transferred to You", color=discord.Color.green())
+            embed = discord.Embed(title="VPS Transferred to You", color=discord.Color.green())
             embed.add_field(name="VPS ID", value=vps_id, inline=True)
             embed.add_field(name="Previous Owner", value=ctx.author.name, inline=True)
             embed.add_field(name="Memory", value=f"{vps['memory']}GB", inline=True)
